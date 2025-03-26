@@ -48,9 +48,15 @@ public class SecurityConfig {
             "/webjars/**"
     };
 
-    private static final String[] PUBLIC__WHITELIST = {
+    private static final String[] PUBLIC_WHITELIST = {
             "/actuator/**",
             "/api/auth/**"
+    };
+    private static final String[] CLIENTE_WHITELIST = {
+            "/api/cliente/**"
+    };
+    private static final String[] ADMIN_WHITELIST = {
+            "/api/admin/**"
     };
 
     @Bean
@@ -59,10 +65,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(SWAGGER_WHITELIST).permitAll()
-                        .requestMatchers(PUBLIC__WHITELIST).permitAll()
-                        .requestMatchers("/api/clientes/**").hasAnyRole("ADMIN", "CLIENTE")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .anyRequest().permitAll()
+                        .requestMatchers(PUBLIC_WHITELIST).permitAll()
+                        .requestMatchers(CLIENTE_WHITELIST).hasAnyRole("ADMIN", "CLIENTE")
+                        .requestMatchers(ADMIN_WHITELIST).hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

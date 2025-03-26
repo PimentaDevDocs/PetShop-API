@@ -5,6 +5,9 @@ import com.pimenta.petshop.model.AuthResponse;
 import com.pimenta.petshop.model.UsuarioDTO;
 import com.pimenta.petshop.model.UsuarioEntity;
 import com.pimenta.petshop.security.JwtUtil;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +25,15 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
+    private final MeterRegistry meterRegistry;
+    private Counter userRegisterCounter;
+    private Counter userLoginCounter;
+
+    @PostConstruct
+    private void init() {
+        this.userRegisterCounter = this.meterRegistry.counter("user_register_success_total", "service", "auth_service");
+        this.userLoginCounter = meterRegistry.counter("user_login_attempt_total");
+    }
 
     public AuthResponse register(UsuarioDTO usuarioDTO) {
         var user = UsuarioEntity.builder()
@@ -31,6 +43,7 @@ public class AuthService {
                 .senha(passwordEncoder.encode(usuarioDTO.getSenha()))
                 .build();
 
+        userRegisterCounter.increment();
         usuarioService.createUsuario(usuarioMapper.toDto(user));
 
         return AuthResponse.builder()
@@ -48,6 +61,8 @@ public class AuthService {
             );
 
             UsuarioDTO user = usuarioService.getUsuarioByCpf(usuarioDTO.getCpf());
+
+            userLoginCounter.increment();
 
             return AuthResponse.builder()
                     .token(jwtUtil.generateToken(usuarioMapper.toEntity(user)))
