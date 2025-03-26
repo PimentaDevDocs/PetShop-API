@@ -1,5 +1,7 @@
 package com.pimenta.petshop.security;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,29 +22,35 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
+@SecurityScheme(
+        name = SecurityConfig.SECURITY,
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer"
+)
 public class SecurityConfig {
+
+    public static final String SECURITY = "bearerAuth";
 
     private final UserDetailsService userDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    private static final String[] PUBLIC_WHITELIST = {
+    private static final String[] SWAGGER_WHITELIST = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/swagger-resources/**",
+            "/webjars/**"
+    };
+
+    private static final String[] PUBLIC__WHITELIST = {
+            "/actuator/**",
             "/api/auth/**"
-    };
-
-    private static final String[] CLIENTE_WHITELIST = {
-    };
-
-    private static final String[] ADMIN_WHITELIST = {
-            "/api/admin/**",
-            "/api/usuario/**"
     };
 
     @Bean
@@ -50,14 +58,11 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PUBLIC_WHITELIST).permitAll()
-                        .requestMatchers(
-                                Stream
-                                        .of(CLIENTE_WHITELIST, ADMIN_WHITELIST)
-                                        .flatMap(Arrays::stream)
-                                        .toArray(String[]::new)).hasAnyRole("ADMIN", "CLIENTE")
-                        .requestMatchers(ADMIN_WHITELIST).hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                        .requestMatchers(PUBLIC__WHITELIST).permitAll()
+                        .requestMatchers("/api/clientes/**").hasAnyRole("ADMIN", "CLIENTE")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
