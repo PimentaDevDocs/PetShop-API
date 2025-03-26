@@ -1,5 +1,6 @@
 package com.pimenta.petshop.service;
 
+import com.pimenta.petshop.exception.NotFoundException;
 import com.pimenta.petshop.mapper.UsuarioMapper;
 import com.pimenta.petshop.model.UsuarioDTO;
 import com.pimenta.petshop.model.UsuarioEntity;
@@ -33,10 +34,10 @@ public class UsuarioService {
     public UsuarioDTO getUsuarioByCpf(String cpf) {
         return usuarioRepository.findByCpf(cpf)
                 .map(usuarioMapper::toDtoWithoutPassword)
-                .orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
+                .orElseThrow(() -> new NotFoundException(UsuarioEntity.class, "cpf", cpf));
     }
 
-    @jakarta.transaction.Transactional
+    @Transactional
     public void deleteUsuario(String cpf) {
         usuarioRepository.deleteByCpf(cpf);
     }
