@@ -19,7 +19,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         Exception exception = (Exception) request.getAttribute("jwtException");
-        String message = exception != null ? exception.getMessage() : authException.getMessage();
+        String message = exception != null ? exception.getMessage() : "Você não tem permissão para acessar este recurso.";
 
         response.getWriter().write("{ \"error\": \"Unauthorized\", \"message\": \"" + message + "\" }");
     }

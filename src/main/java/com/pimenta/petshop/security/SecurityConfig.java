@@ -53,10 +53,15 @@ public class SecurityConfig {
             "/api/auth/**"
     };
     private static final String[] CLIENTE_WHITELIST = {
-            "/api/cliente/**"
+            "/api/clientes/**",
+            "/api/contatos/**",
+            "/api/enderecos/**",
+            "/api/pets/**",
+            "/api/racas/{id}",
+            "/api/usuarios/{id}",
     };
     private static final String[] ADMIN_WHITELIST = {
-            "/api/admin/**"
+            "/**"
     };
 
     @Bean
@@ -105,4 +110,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
