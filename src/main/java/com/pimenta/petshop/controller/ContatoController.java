@@ -3,6 +3,7 @@ package com.pimenta.petshop.controller;
 import com.pimenta.petshop.model.ContatoDTO;
 import com.pimenta.petshop.security.SecurityConfig;
 import com.pimenta.petshop.service.ContatoService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +24,23 @@ public class ContatoController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') || @securityService.isContatoOwner(authentication, #id)")
+    @Operation(summary = "Atualizar contato", description = "Metodo para atualizar contato")
     public ContatoDTO updateContato(@PathVariable Long id, @RequestBody ContatoDTO dto) {
         return contatoService.updateContato(id, dto);
+    }
+
+    @GetMapping("/cliente/{cpf}")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication, #cpf)")
+    @Operation(summary = "Listar contatos por cliente", description = "Metodo para listar contatos por cliente")
+    public List<ContatoDTO> getContatosByCliente(@PathVariable String cpf) {
+        return contatoService.getContatosByCliente(cpf);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN') || @securityService.isContatoOwner(authentication, #id)")
+    @Operation(summary = "Deletar contato", description = "Metodo para deletar contato")
     public void deleteContato(@PathVariable Long id) {
         contatoService.deleteContato(id);
-    }
-
-    @GetMapping("/cliente/{cpf}")
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication, #cpf)")
-    public List<ContatoDTO> getContatosByCliente(@PathVariable String cpf) {
-        return contatoService.getContatosByCliente(cpf);
     }
 }

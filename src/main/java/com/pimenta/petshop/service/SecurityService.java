@@ -13,10 +13,9 @@ public class SecurityService {
     private final PetRepository petRepository;
     private final ContatoRepository contatoRepository;
     private final EnderecoRepository enderecoRepository;
-    private final AtendimentoRepository atendimentoRepository;
     private final FotoRepository fotoRepository;
 
-    public boolean isOwner(Authentication authentication, String cpf) {
+    private boolean compareCpf(Authentication authentication, String cpf) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return false;
         }
@@ -34,6 +33,10 @@ public class SecurityService {
         return authCpf.equals(cpf);
     }
 
+    public boolean isOwner(Authentication authentication, String cpf) {
+        return compareCpf(authentication, cpf);
+    }
+
     public boolean isPetOwner(Authentication authentication, Long petId) {
         String cpf = authentication.getName();
         return petRepository.existsByIdAndClienteCpf(petId, cpf);
@@ -47,11 +50,6 @@ public class SecurityService {
     public boolean isEnderecoOwner(Authentication authentication, Long enderecoId) {
         String cpf = authentication.getName();
         return enderecoRepository.existsByIdAndClienteCpf(enderecoId, cpf);
-    }
-
-    public boolean isAtendimentoOwner(Authentication authentication, Long atendimentoId) {
-        String cpf = authentication.getName();
-        return atendimentoRepository.existsByIdAndClienteCpf(atendimentoId, cpf);
     }
 
     public boolean isFotoOwner(Authentication authentication, Long fotoId) {

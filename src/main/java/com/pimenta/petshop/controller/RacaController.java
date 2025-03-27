@@ -3,6 +3,7 @@ package com.pimenta.petshop.controller;
 import com.pimenta.petshop.model.RacaDTO;
 import com.pimenta.petshop.security.SecurityConfig;
 import com.pimenta.petshop.service.RacaService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,26 +24,30 @@ public class RacaController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Criar raca", description = "Metodo para criar raca")
     public RacaDTO createRaca(@RequestBody RacaDTO dto) {
         return racaService.createRaca(dto);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Criar atualizar raca", description = "Metodo para atualizar raca")
     public RacaDTO updateRaca(@PathVariable Long id, @RequestBody RacaDTO dto) {
         return racaService.updateRaca(id, dto);
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ADMIN')")
-    public void deleteRaca(@PathVariable Long id) {
-        racaService.deleteRaca(id);
-    }
-
     @GetMapping
     @PreAuthorize("hasRole('CLIENTE') || hasRole('ADMIN')")
+    @Operation(summary = "Listar raca", description = "Metodo para listar racas")
     public List<RacaDTO> getAllRacas() {
         return racaService.getAllRacas();
+    }
+
+    @DeleteMapping("/{racaId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Deletar raca", description = "Metodo para deletar raca")
+    public void deleteRaca(@PathVariable Long racaId) {
+        racaService.deleteRaca(racaId);
     }
 }

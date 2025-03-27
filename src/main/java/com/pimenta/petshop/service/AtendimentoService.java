@@ -43,12 +43,12 @@ public class AtendimentoService {
     }
 
     @Transactional
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isAtendimentoOwner(authentication, #id)")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication, #id)")
     public void deleteAtendimento(Long id) {
         atendimentoRepository.deleteById(id);
     }
 
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isAtendimentoOwner(authentication, #cpf)")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication, #cpf)")
     public List<AtendimentoDTO> getAtendimentosByCliente(String cpf) {
 
         List<AtendimentoEntity> atendimentos = atendimentoRepository.findByClienteCpf(cpf);

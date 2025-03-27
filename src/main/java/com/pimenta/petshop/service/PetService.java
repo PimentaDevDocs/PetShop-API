@@ -60,4 +60,9 @@ public class PetService {
                 .map(petMapper::toDto)
                 .orElseThrow(() -> new NotFoundException(PetEntity.class, id.toString()));
     }
+
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isPetOwner(authentication, #id)")
+    public void deletePet(Long id) {
+        petRepository.deleteById(id);
+    }
 }

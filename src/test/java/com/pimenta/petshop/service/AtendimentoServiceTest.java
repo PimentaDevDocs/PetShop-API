@@ -108,7 +108,7 @@ class AtendimentoServiceTest {
     }
 
     @Test
-    void testGetAtendimentosByCliente_Success() {
+    void testGetAtendimentosByPet_Success() {
         List<AtendimentoDTO> result = atendimentoService.getAtendimentosByCliente("12345678900");
 
         assertNotNull(result);
@@ -117,7 +117,7 @@ class AtendimentoServiceTest {
     }
 
     @Test
-    void testGetAtendimentosByCliente_NotFound() {
+    void testGetAtendimentosByPet_NotFound() {
         when(atendimentoRepository.findByClienteCpf("12345678900")).thenReturn(List.of());
 
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> atendimentoService.getAtendimentosByCliente("12345678900"));
