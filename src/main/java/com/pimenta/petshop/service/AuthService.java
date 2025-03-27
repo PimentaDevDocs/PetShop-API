@@ -32,7 +32,7 @@ public class AuthService {
     @PostConstruct
     private void init() {
         this.userRegisterCounter = this.meterRegistry.counter("user_register_success_total", "service", "auth_service");
-        this.userLoginCounter = meterRegistry.counter("user_login_attempt_total");
+        this.userLoginCounter = meterRegistry.counter("user_login_attempt_total","service", "auth_service");
     }
 
     public AuthResponse register(UsuarioDTO usuarioDTO) {
@@ -60,9 +60,9 @@ public class AuthService {
                     )
             );
 
-            UsuarioDTO user = usuarioService.getUsuarioByCpf(usuarioDTO.getCpf());
-
             userLoginCounter.increment();
+
+            UsuarioDTO user = usuarioService.getUsuarioByCpf(usuarioDTO.getCpf());
 
             return AuthResponse.builder()
                     .token(jwtUtil.generateToken(usuarioMapper.toEntity(user)))
