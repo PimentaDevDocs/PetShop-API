@@ -13,4 +13,5 @@ public class ClienteDTO {
     private List<ContatoDTO> contatos;
     private List<EnderecoDTO> enderecos;
     private List<PetDTO> pets;
+    private List<FotoDTO> fotos;
 }

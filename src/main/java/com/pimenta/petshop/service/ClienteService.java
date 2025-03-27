@@ -37,7 +37,7 @@ public class ClienteService {
         return clienteMapper.toDto(savedCliente);
     }
 
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication)")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication, #cpf)")
     public ClienteDTO getClienteByCpf(String cpf) {
         return clienteRepository.findByCpf(cpf).map(clienteMapper::toDto).orElseThrow(() -> new NotFoundException(ClienteEntity.class, cpf));
     }

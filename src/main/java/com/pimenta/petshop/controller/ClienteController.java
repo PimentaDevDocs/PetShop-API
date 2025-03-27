@@ -27,7 +27,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{cpf}")
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication)")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication, #cpf)")
     public ClienteDTO getClienteByCpf(@PathVariable String cpf) {
         return clienteService.getClienteByCpf(cpf);
     }

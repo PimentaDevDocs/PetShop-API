@@ -18,7 +18,7 @@ public class AtendimentoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN') || (@securityService.isOwner(authentication) && " +
+    @PreAuthorize("hasRole('ADMIN') || (@securityService.isOwner(authentication, #dto.cpf) && " +
             "@securityService.isPetOwner(authentication, #dto.idPet))")
     public AtendimentoDTO createAtendimento(@RequestBody AtendimentoDTO dto) {
         return atendimentoService.createAtendimento(dto);

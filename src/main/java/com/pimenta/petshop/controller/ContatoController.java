@@ -35,7 +35,7 @@ public class ContatoController {
     }
 
     @GetMapping("/cliente/{cpf}")
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication)")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication, #cpf)")
     public List<ContatoDTO> getContatosByCliente(@PathVariable String cpf) {
         return contatoService.getContatosByCliente(cpf);
     }

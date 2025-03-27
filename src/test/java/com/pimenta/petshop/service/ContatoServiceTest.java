@@ -38,11 +38,9 @@ public class ContatoServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Criação de cliente para os testes
         ClienteEntity clienteEntity = new ClienteEntity();
         clienteEntity.setCpf("00000000000");
 
-        // Criação de um ContatoEntity para os testes
         contatoEntity = new ContatoEntity();
         contatoEntity.setId(1L);
         contatoEntity.setCliente(clienteEntity);
@@ -50,7 +48,6 @@ public class ContatoServiceTest {
         contatoEntity.setValor("100");
         contatoEntity.setTag("Principal");
 
-        // Criação de um ContatoDTO para os testes
         contatoDTO = new ContatoDTO();
         contatoDTO.setId(1L);
         contatoDTO.setTipo("Telefone");
@@ -96,9 +93,7 @@ public class ContatoServiceTest {
     void testGetContatosByCliente_NotFound() {
         when(contatoRepository.findByClienteCpf(anyString())).thenReturn(List.of());
 
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            contatoService.getContatosByCliente("00000000000");
-        });
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> contatoService.getContatosByCliente("00000000000"));
 
         assertEquals("Cliente não encontrado(a) para valor: '00000000000'", exception.getMessage());
     }
@@ -120,9 +115,7 @@ public class ContatoServiceTest {
     void testUpdateContato_NotFound() {
         when(contatoRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
-            contatoService.updateContato(1L, contatoDTO);
-        });
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> contatoService.updateContato(1L, contatoDTO));
 
         assertEquals("Contato não encontrado(a) para valor: '1'", exception.getMessage());
     }

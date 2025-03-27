@@ -21,13 +21,13 @@ public class PetController {
     private PetService petService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication)")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isPetOwner(authentication, #dto.id)")
     public PetDTO createPet(@RequestBody PetDTO dto) {
         return petService.createPet(dto);
     }
 
     @GetMapping("/cliente/{cpf}")
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication)")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication, #cpf)")
     public List<PetDTO> getPetsByCliente(@PathVariable String cpf) {
         return petService.getPetsByCliente(cpf);
     }

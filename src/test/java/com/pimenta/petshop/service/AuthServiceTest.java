@@ -66,12 +66,7 @@ public class AuthServiceTest {
         usuarioDTO.setROLE(ROLE.ADMIN);
         usuarioDTO.setSenha("senha");
 
-        usuarioEntity = UsuarioEntity.builder()
-                .cpf("12345678901")
-                .nome("Teste")
-                .ROLE(ROLE.ADMIN)
-                .senha("hashedSenha")
-                .build();
+        usuarioEntity = UsuarioEntity.builder().cpf("12345678901").nome("Teste").ROLE(ROLE.ADMIN).senha("hashedSenha").build();
 
         userRegisterCounter = mock(Counter.class);
         userLoginCounter = mock(Counter.class);
@@ -81,7 +76,6 @@ public class AuthServiceTest {
 
         when(jwtUtil.generateToken(any(UsuarioEntity.class))).thenReturn("token123");
 
-        // Manually invoke the @PostConstruct method
         Method initMethod = AuthService.class.getDeclaredMethod("init");
         initMethod.setAccessible(true);
         initMethod.invoke(authService);
@@ -118,13 +112,8 @@ public class AuthServiceTest {
 
     public void testLogin_WithInvalidCredentials() {
 
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenThrow(new RuntimeException("Invalid credentials"));
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-
-            authService.login(usuarioDTO);
-
-        });
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenThrow(new RuntimeException("Invalid credentials"));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> authService.login(usuarioDTO));
         assertTrue(exception.getMessage().contains("Erro de autenticação"));
     }
 }

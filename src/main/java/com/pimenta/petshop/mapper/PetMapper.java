@@ -13,6 +13,7 @@ public interface PetMapper {
 
     @Mapping(source = "cliente.cpf", target = "cpf")
     @Mapping(source = "raca.id", target = "idRaca")
+    @Mapping(source = "fotos", target = "fotos")
     PetDTO toDto(PetEntity entity);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

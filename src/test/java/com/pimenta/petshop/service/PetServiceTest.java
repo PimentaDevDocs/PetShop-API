@@ -99,7 +99,6 @@ class PetServiceTest {
 
     @Test
     void testGetPetsByCliente_Success() {
-        when(clienteService.getClienteByCpf("12345678901")).thenReturn(clienteDTO);
         when(petRepository.findByClienteCpf("12345678901")).thenReturn(List.of(petEntity));
         when(petMapper.toDto(any())).thenReturn(petDTO);
 
@@ -109,7 +108,6 @@ class PetServiceTest {
 
     @Test
     void testGetPetsByCliente_NotFound() {
-        when(clienteService.getClienteByCpf("12345678901")).thenReturn(clienteDTO);
         when(petRepository.findByClienteCpf("12345678901")).thenReturn(List.of());
 
         assertThrows(NotFoundException.class, () -> petService.getPetsByCliente("12345678901"));

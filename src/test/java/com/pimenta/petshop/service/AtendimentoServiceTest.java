@@ -79,13 +79,11 @@ class AtendimentoServiceTest {
         atendimentoDTO.setValor("100");
         atendimentoDTO.setDataAtendimento(LocalDateTime.parse("2025-03-01T00:00:00"));
 
-        // Mocking the service methods
         when(clienteService.getClienteByCpf("12345678900")).thenReturn(clienteDTO);
         when(petService.getPetById(1L)).thenReturn(petDTO);
         when(atendimentoRepository.save(any(AtendimentoEntity.class))).thenReturn(atendimentoEntity);
         when(atendimentoRepository.findByClienteCpf("12345678900")).thenReturn(List.of(atendimentoEntity));
 
-        // Mocking mappers
         when(atendimentoMapper.toEntity(atendimentoDTO)).thenReturn(atendimentoEntity);
         when(atendimentoMapper.toDto(atendimentoEntity)).thenReturn(atendimentoDTO);
         when(clienteMapper.toEntity(clienteDTO)).thenReturn(clienteEntity);
@@ -122,9 +120,7 @@ class AtendimentoServiceTest {
     void testGetAtendimentosByCliente_NotFound() {
         when(atendimentoRepository.findByClienteCpf("12345678900")).thenReturn(List.of());
 
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> {
-            atendimentoService.getAtendimentosByCliente("12345678900");
-        });
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> atendimentoService.getAtendimentosByCliente("12345678900"));
 
         assertEquals("Atendimento não encontrado(a) para valor: '12345678900'", thrown.getMessage());
     }

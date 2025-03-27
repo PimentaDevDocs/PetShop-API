@@ -13,10 +13,10 @@ public class ContatoEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_cpf", referencedColumnName = "cpf")  // Relacionamento com Cliente
+    @JoinColumn(name = "cliente_cpf", referencedColumnName = "cpf")
     private ClienteEntity cliente;
 
-    private String tipo;    // Tipo (email, telefone, etc)
-    private String valor;   // O valor do contato (e.g., telefone ou e-mail)
-    private String tag;     // Uma tag para identificar ou categorizar o contato
+    private String tipo;
+    private String valor;
+    private String tag;
 }

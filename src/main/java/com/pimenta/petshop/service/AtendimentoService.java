@@ -28,7 +28,7 @@ public class AtendimentoService {
     private final PetMapper petMapper;
 
     @Transactional
-    @PreAuthorize("hasRole('ADMIN') || (@securityService.isOwner(authentication) && " +
+    @PreAuthorize("hasRole('ADMIN') || (@securityService.isOwner(authentication, #dto.cpf) && " +
             "@securityService.isPetOwner(authentication, #dto.idPet))")
     public AtendimentoDTO createAtendimento(AtendimentoDTO dto) {
         ClienteDTO clienteDTO = clienteService.getClienteByCpf(dto.getCpf());

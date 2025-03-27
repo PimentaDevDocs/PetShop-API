@@ -59,6 +59,7 @@ public class SecurityConfig {
             "/api/pets/**",
             "/api/racas/{id}",
             "/api/usuarios/{id}",
+            "/api/fotos/**",
     };
     private static final String[] ADMIN_WHITELIST = {
             "/**"

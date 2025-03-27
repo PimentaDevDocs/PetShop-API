@@ -14,7 +14,7 @@ public class ClienteEntity {
 
     @Id
     @Column(name = "cpf", length = 11, unique = true)
-    private String cpf;  // Identificador único
+    private String cpf;
 
     private String nome;
 
@@ -22,11 +22,14 @@ public class ClienteEntity {
     private LocalDate dataCadastro;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    private List<ContatoEntity> contatos = new ArrayList<>();  // Relacionamento com ContatoEntity
+    private List<ContatoEntity> contatos = new ArrayList<>();
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    private List<EnderecoEntity> enderecos = new ArrayList<>();  // Relacionamento com EnderecoEntity
+    private List<EnderecoEntity> enderecos = new ArrayList<>();
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<PetEntity> pets = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<FotoEntity> fotos = new ArrayList<>();
 }

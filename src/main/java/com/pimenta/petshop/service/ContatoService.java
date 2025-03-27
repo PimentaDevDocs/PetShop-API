@@ -31,7 +31,7 @@ public class ContatoService {
         contatoRepository.deleteById(id);
     }
 
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication)")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication, #cpf)")
     public List<ContatoDTO> getContatosByCliente(String cpf) {
 
         List<ContatoEntity> contatos = contatoRepository.findByClienteCpf(cpf);

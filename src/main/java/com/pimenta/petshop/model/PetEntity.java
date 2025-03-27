@@ -31,4 +31,7 @@ public class PetEntity {
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
     private List<AtendimentoEntity> atendimentos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    private List<FotoEntity> fotos = new ArrayList<>();
 }

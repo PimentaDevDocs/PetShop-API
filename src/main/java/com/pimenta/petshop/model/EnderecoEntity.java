@@ -13,12 +13,12 @@ public class EnderecoEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_cpf", referencedColumnName = "cpf")  // Relacionamento com Cliente
+    @JoinColumn(name = "cliente_cpf", referencedColumnName = "cpf")
     private ClienteEntity cliente;
 
-    private String logradouro;   // Rua, avenida, etc.
+    private String logradouro;
     private String cidade;
     private String bairro;
-    private String complemento;  // Complemento do endereço
-    private String tag;          // Tag para categorizar o endereço (ex: residencial, comercial)
+    private String complemento;
+    private String tag;
 }

@@ -28,7 +28,7 @@ public class PetService {
     private final RacaService racaService;
 
     @Transactional
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication)")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isPetOwner(authentication, #dto.id)")
     public PetDTO createPet(PetDTO dto) {
 
         ClienteDTO clienteDTO = clienteService.getClienteByCpf(dto.getCpf());
@@ -41,9 +41,8 @@ public class PetService {
         return petMapper.toDto(petRepository.save(pet));
     }
 
-    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication)")
+    @PreAuthorize("hasRole('ADMIN') || @securityService.isOwner(authentication, #cpf)")
     public List<PetDTO> getPetsByCliente(String cpf) {
-        clienteService.getClienteByCpf(cpf); // Verifica se o cliente existe
 
         List<PetEntity> pets = petRepository.findByClienteCpf(cpf);
         if (pets == null || pets.isEmpty()) {
